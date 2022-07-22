@@ -3,6 +3,7 @@ let prevMove = null;
 let strFirstMove = "";
 let movesCounter = 0;
 let winner = null;
+
 const board = [
   ['','',''],
   ['','',''],
@@ -10,7 +11,7 @@ const board = [
 ];
 
 const moves = [];
-const moves2 = [];
+let curr_move = [];
 
 const optionOne = document.getElementById('opt-1');
 const optionTwo = document.getElementById('opt-2');
@@ -28,6 +29,7 @@ const box9 = document.getElementById('box-9');
 
 const prev = document.getElementById('prev');
 const next = document.getElementById('next');
+const spacer = document.getElementById('spacer');
 
 function checkFirstMove () {
   if (firstMove === true ) {
@@ -49,73 +51,49 @@ function togglePrevMove () {
   }
 }
 
-function checkVerticalX() {
-  if (board[0][0] === 'X' && board[1][0] === 'X' && board[2][0] === 'X') {
-    console.log('X wins!');
-    winner = true;
-  }
-  else if (board[0][1] === 'X' && board[1][1] === 'X' && board[2][1] === 'X') {
-    console.log('X wins!');
-    winner = true;
-  }
-  else if ((board[0][2] === 'X' && board[1][2] === 'X' && board[2][2] === 'X')) {
-    console.log('X wins!');
-    winner = true;
-  }
-}
-
-function checkVerticalO() {
-  if (board[0][0] === 'O' && board[1][0] === 'O' && board[2][0] === 'O') {
-    console.log('O wins!');
-    winner = false;
-  }
-  else if (board[0][1] === 'O' && board[1][1] === 'O' && board[2][1] === 'O') {
-    console.log('O wins!');
-    winner = false;
-  }
-  else if ((board[0][2] === 'O' && board[1][2] === 'O' && board[2][2] === 'O')) {
-    console.log('O wins!');
-    winner = false;
+function checkVertical() {
+  for(let i = 0; i < 1; i++) {
+    for(let j = 0; j <= 2; j++) {
+      if (board[i][j] === 'X' && board[i+1][j] === 'X' && board[i+2][j] === 'X') {
+        console.log('X wins!');
+        select.innerHTML = "X wins!";
+        winner = true;
+      }
+      else if (board[i][j] === 'O' && board[i+1][j] === 'O' && board[i+2][j] === 'O') {
+        console.log('O wins!');
+        select.innerHTML = "O wins!";
+        winner = true;
+      }
+    }
   }
 }
 
-function checkHorizontalX() {
-  if (board[0][0] === 'X' && board[0][1] === 'X' && board[0][2] === 'X') {
-    console.log('X wins!');
-    winner = true;
-  }
-  else if (board[1][0] === 'X' && board[1][1] === 'X' && board[1][2] === 'X') {
-    console.log('X wins!');
-    winner = true;
-  }
-  else if ((board[2][0] === 'X' && board[2][1] === 'X' && board[2][2] === 'X')) {
-    console.log('X wins!');
-    winner = true;
-  }
-}
-
-function checkHorizontalO() {
-  if (board[0][0] === 'O' && board[0][1] === 'O' && board[0][2] === 'O') {
-    console.log('O wins!');
-    winner = false;
-  }
-  else if (board[1][0] === 'O' && board[1][1] === 'O' && board[1][2] === 'O') {
-    console.log('O wins!');
-    winner = false;
-  }
-  else if ((board[2][0] === 'O' && board[2][1] === 'O' && board[2][2] === 'O')) {
-    console.log('O wins!');
-    winner = false;
+function checkHorizontal() {
+  for(let i = 0; i <= 2; i++) {
+    for(let j = 0; j < 1; j++) {
+      if (board[i][j] === 'X' && board[i][j+1] === 'X' && board[i][j+2] === 'X') {
+        console.log('X wins!');
+        select.innerHTML = "X wins!";
+        winner = true;
+      }
+      else if (board[i][j] === 'O' && board[i][j+1] === 'O' && board[i][j+2] === 'O') {
+        console.log('O wins!');
+        select.innerHTML = "O wins!";
+        winner = true;
+      }
+    }
   }
 }
 
 function checkDiagonalX() {
   if (board[0][0] === 'X' && board[1][1] === 'X' && board[2][2] === 'X') {
     console.log('X wins!');
+    select.innerHTML = "X wins!";
     winner = true;
   }
   else if (board[0][2] === 'X' && board[1][1] === 'X' && board[2][0] === 'X') {
     console.log('X wins!');
+    select.innerHTML = "X wins!";
     winner = true;
   }
 }
@@ -123,11 +101,13 @@ function checkDiagonalX() {
 function checkDiagonalO() {
   if (board[0][0] === 'O' && board[1][1] === 'O' && board[2][2] === 'O') {
     console.log('O wins!');
-    winner = false;
+    select.innerHTML = "O wins!";
+    winner = true;
   }
   else if (board[0][2] === 'O' && board[1][1] === 'O' && board[2][0] === 'O') {
     console.log('O wins!');
-    winner = false;
+    select.innerHTML = "O wins!";
+    winner = true;
   }
 }
 
@@ -143,55 +123,54 @@ function disableAllButtons() {
   box9.disabled = true;
 }
 
+function displayPrevNextButtons() {
+  disableAllButtons();
+  prev.style.display = 'inline-block';
+  next.style.display = 'inline-block';
+  spacer.style.display = 'inline-block';
+  next.disabled = true;
+}
+
 function checkWinner() {
-  for (let i = 0; i <= 1; i++) {
-    checkVerticalX();
-      if (winner === true) {
-        disableAllButtons();
-        prev.style.display = 'inline-block';
-        next.style.display = 'inline-block';
-        break;
+    for (let i = 0; i < 1; i++) {
+      checkVertical();
+        if (winner === true) {
+          displayPrevNextButtons();
+          break;
+        }
+      checkHorizontal();
+        if (winner === true) {
+          displayPrevNextButtons();
+          break;
+        }
+      checkDiagonalX();
+        if(winner === true) {
+          displayPrevNextButtons();
+          break;
+        }
+      checkDiagonalO();
+        if(winner === true) {
+          displayPrevNextButtons();
+          break;
+        }
       }
-    checkVerticalO();
-      if (winner === false) {
-        disableAllButtons();
-        prev.style.display = 'inline-block';
-        next.style.display = 'inline-block';
-        break;
-      }
-    checkHorizontalX();
-      if (winner === true) {
-        disableAllButtons();
-        prev.style.display = 'inline-block';
-        next.style.display = 'inline-block';
-        break;
-      }
-    checkHorizontalO();
-      if(winner === false) {
-        disableAllButtons();
-        prev.style.display = 'inline-block';
-        next.style.display = 'inline-block';
-        break;
-      }
-    checkDiagonalX();
-      if(winner ===true) {
-        disableAllButtons();
-        prev.style.display = 'inline-block';
-        next.style.display = 'inline-block';
-        break;
-      }
-    checkDiagonalO();
-      if(winner === false) {
-        disableAllButtons();
-        prev.style.display = 'inline-block';
-        next.style.display = 'inline-block';
-        break;
-      }
-  }
+    if (movesCounter === 9 &&  winner === null) {
+      console.log("DRAW!");
+      select.innerHTML = "Draw!";
+      prev.style.display = 'inline-block';
+      next.style.display = 'inline-block';
+      spacer.style.display = 'inline-block';
+      next.disabled = true;
+    }
+}
+
+function noOptionSelected() {
+  select.innerHTML = "X plays first";
+  optionOne.style.display = "none";
+  optionTwo.style.display = "none";
 }
 
 optionOne.addEventListener("click", function() {
-  firstMove = true;
   select.innerHTML = "X plays first";
   optionOne.style.display = "none";
   optionTwo.style.display = "none";
@@ -206,22 +185,25 @@ optionTwo.addEventListener("click", function() {
 
 box1.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[0][0] = strFirstMove;
     box1.innerHTML = strFirstMove;
     box1.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[0][0] = prevMove;
     box1.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box1.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -230,22 +212,25 @@ box1.addEventListener("click", function() {
 
 box2.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[0][1] = strFirstMove;
     box2.innerHTML = strFirstMove;
     box2.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[0][1] = prevMove;
     box2.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box2.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -254,22 +239,25 @@ box2.addEventListener("click", function() {
 
 box3.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[0][2] = strFirstMove;
     box3.innerHTML = strFirstMove;
     box3.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[0][2] = prevMove;
     box3.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box3.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -278,22 +266,25 @@ box3.addEventListener("click", function() {
 
 box4.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[1][0] = strFirstMove;
     box4.innerHTML = strFirstMove;
     box4.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[1][0] = prevMove;
     box4.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box4.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -302,22 +293,25 @@ box4.addEventListener("click", function() {
 
 box5.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[1][1] = strFirstMove;
     box5.innerHTML = strFirstMove;
     box5.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[1][1] = prevMove;
     box5.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box5.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -326,22 +320,25 @@ box5.addEventListener("click", function() {
 
 box6.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[1][2] = strFirstMove;
     box6.innerHTML = strFirstMove;
     box6.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[1][2] = prevMove;
     box6.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box6.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -350,22 +347,25 @@ box6.addEventListener("click", function() {
 
 box7.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[2][0] = strFirstMove;
     box7.innerHTML = strFirstMove;
     box7.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[2][0] = prevMove;
     box7.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box7.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -374,22 +374,25 @@ box7.addEventListener("click", function() {
 
 box8.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[2][1] = strFirstMove;
     box8.innerHTML = strFirstMove;
     box8.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[2][1] = prevMove;
     box8.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box8.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
@@ -398,32 +401,76 @@ box8.addEventListener("click", function() {
 
 box9.addEventListener("click", function() {
   if (prevMove === null) {
+    if(firstMove === true) {
+      noOptionSelected();
+    }
     checkFirstMove();
+    select.innerHTML = prevMove + " is playing";
     board[2][2] = strFirstMove;
     box9.innerHTML = strFirstMove;
     box9.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
   }
   else if (prevMove !== null) {
     board[2][2] = prevMove;
     box9.innerHTML = prevMove;
     togglePrevMove();
+    select.innerHTML = prevMove + " is playing";
     box9.disabled = true;
     movesCounter += 1;
-    console.log(board);
-    moves.push(board);
+    moves.push(JSON.parse(JSON.stringify(board)));
     if (movesCounter >= 5) {
       checkWinner();
     }
   }
 });
 
+function setBoxes() {
+  box1.innerHTML = curr_move[0][0];
+  box2.innerHTML = curr_move[0][1];
+  box3.innerHTML = curr_move[0][2];
+  box4.innerHTML = curr_move[1][0];
+  box5.innerHTML = curr_move[1][1];
+  box6.innerHTML = curr_move[1][2];
+  box7.innerHTML = curr_move[2][0];
+  box8.innerHTML = curr_move[2][1];
+  box9.innerHTML = curr_move[2][2];
+}
+
 prev.addEventListener("click", function() {
-  console.log(moves);
+  
+  movesCounter -= 1;
+  
+  curr_move = moves[movesCounter-1];
+  setBoxes();
+
+  if (movesCounter === 1) {
+    prev.disabled = true;
+  }
+  else if (movesCounter > 1) {
+    prev.disabled = false;
+    if (movesCounter <= moves.length - 1) {
+      next.disabled = false;
+    }
+  }
+  
 });
 
-
-
-
+next.addEventListener("click", function() {
+  
+  curr_move = moves[movesCounter];
+  setBoxes();
+  
+  if (movesCounter === moves.length - 1) {
+    next.disabled = true;
+  }
+  else if (movesCounter < moves.length - 1) {
+    next.disabled = false;
+    if (movesCounter > 1) {
+      prev.disabled = false;
+    }
+  }
+  movesCounter += 1;
+  
+});
